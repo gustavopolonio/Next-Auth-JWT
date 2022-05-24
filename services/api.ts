@@ -2,6 +2,7 @@ import axios, { AxiosError } from 'axios'
 import { GetServerSidePropsContext } from 'next';
 import { parseCookies, setCookie } from 'nookies'
 import { signOut } from '../contexts/AuthContext';
+import { AuthTokenError } from './errors/AuthTokenError';
 
 interface AxiosResponseError {
   code?: string
@@ -61,7 +62,6 @@ export function setupAPIClient(ctx: Context = undefined) {
           }).catch(err => {
             failedRequestsQueue.forEach(request => request.reject(err))
             failedRequestsQueue = []
-            console.log(err)
   
             if (typeof window !== 'undefined') {
               signOut()
@@ -93,6 +93,8 @@ export function setupAPIClient(ctx: Context = undefined) {
         // Log out user
         if (typeof window !== 'undefined') {
           signOut()
+        } else {
+          return Promise.reject(new AuthTokenError())
         }
       }
     }
