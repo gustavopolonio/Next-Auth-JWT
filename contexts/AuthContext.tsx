@@ -1,7 +1,7 @@
 import { createContext, ReactNode, useState, useEffect } from 'react'
 import { parseCookies, setCookie, destroyCookie } from 'nookies'
 import Router from 'next/router'
-import { api } from '../services/api'
+import { api } from '../services/apiClient'
 
 interface User {
   email: string;
@@ -49,7 +49,8 @@ export function AuthProvider({ children }: AuthProviderProps) {
           roles
         })
       })
-      .catch(() => {
+      .catch((err) => {
+        console.log(err)
         signOut()
       })
     }

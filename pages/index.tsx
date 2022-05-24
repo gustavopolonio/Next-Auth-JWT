@@ -1,6 +1,5 @@
-import type { NextPage, GetServerSideProps } from 'next'
+import type { NextPage } from 'next'
 import { useState, FormEvent, useContext } from 'react'
-import { parseCookies } from 'nookies'
 import { AuthContext } from '../contexts/AuthContext'
 import { withSSRGuest } from '../utils/withSSRGuest'
 
