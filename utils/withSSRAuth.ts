@@ -32,5 +32,13 @@ export function withSSRAuth<P>(fn: GetServerSideProps<P>) {
         }
       }
     }
+
+    // Se der erro e não for do tipo AuthTokenError, envio o usuário para uma pág de erro padrão, por exemplo "Tente novamente mais tarde"
+    // return {
+    //   redirect: {
+    //     destination: '/error',
+    //     permanent: false
+    //   }
+    // }
   }
 }
