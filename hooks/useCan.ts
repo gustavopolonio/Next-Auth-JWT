@@ -18,9 +18,7 @@ export function useCan({ permissions, roles }: UseCanProps) {
       return user.permissions.includes(permission)
     })
 
-    if (!hasPermissions) {
-      return false
-    }
+    return hasPermissions
   }
 
   if (roles?.length > 0) {
@@ -28,10 +26,8 @@ export function useCan({ permissions, roles }: UseCanProps) {
       return user.roles.includes(role)
     })
 
-    if (!hasRoles) {
-      return false
-    }
+    return hasRoles
   }
 
-  return true
+  return false
 }
