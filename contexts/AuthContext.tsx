@@ -23,17 +23,38 @@ interface AuthProviderProps {
   children: ReactNode
 }
 
+let bc: BroadcastChannel
+
 export const AuthContext = createContext({} as AuthContextData)
 
 export function signOut() {
   destroyCookie(null, 'nextauth.token')
   destroyCookie(null, 'nextauth.refreshToken')
+
+  bc.postMessage('signOut')
+  
   Router.push('/')
 }
 
 export function AuthProvider({ children }: AuthProviderProps) {
   const [user, setUser] = useState<User>()
   const isAuthenticated = !!user
+
+  useEffect(() => {
+    bc = new BroadcastChannel('auth')
+
+    bc.onmessage = (message) => {
+      switch (message.data) {
+        case 'signOut':
+          Router.push('/')
+          break
+        case 'signIn':
+          window.location.assign('/dashboard')
+        default:
+          break
+      }
+    }
+  }, [])
 
   useEffect(() => {
     const cookies = parseCookies()
@@ -78,6 +99,9 @@ export function AuthProvider({ children }: AuthProviderProps) {
       })
 
       api.defaults.headers.common['Authorization'] = `Bearer ${token}`
+
+      bc.postMessage('signIn')
+
       Router.push('/dashboard')
 
     } catch (err) {

@@ -4,14 +4,15 @@ import { Can } from '../components/Can'
 import { setupAPIClient } from '../services/api'
 import { api } from '../services/apiClient'
 import { withSSRAuth } from '../utils/withSSRAuth'
+import { signOut } from '../contexts/AuthContext'
 
 export default function Dashboar() {
   const { user } = useContext(AuthContext)
 
   useEffect(() => {
     api.get('me')
-      .then(response => {console.log(response)})
-      .catch(err => console.log(err))
+      // .then(response => {console.log(response)})
+      // .catch(err => console.log(err))
   }, [])
 
   return (
@@ -21,6 +22,8 @@ export default function Dashboar() {
       <Can permissions={['metrics.list']}>
         <h1>Metrics</h1>
       </Can>
+
+      <button onClick={signOut}>Sign out</button>
     </>
   )
 }
